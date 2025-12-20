@@ -1,0 +1,79 @@
+{
+  "name": "Sumit Kumar",
+  "title": "Software Engineer",
+  "email": "sumittweb@gmail.com",
+  "phone": "+918791780134",
+  "location": "Gurugram, India",
+  "links": {
+    "linkedin": "https://www.linkedin.com/in/sumit-kkumar/",
+    "github": "https://github.com/Sumitkkumar"
+  },
+  "education": [
+    {
+      "degree": "B.Tech in Computer Science and Engineering",
+      "school": "NIT Srinagar",
+      "year": "2018 - 2022",
+      "cgpa": "7.96/10"
+    },
+    {
+      "degree": "XII",
+      "school": "Green Field Academy, Saharanpur",
+      "year": "2016-2017",
+      "cgpa": "89%"
+    }
+  ],
+  "projects": [
+    {
+      "title": "Real-time Trading Analytics Dashboard"
+    },
+    {
+      "title": "Intelligent Content Management System"
+    }
+  ],
+  "certifications": [
+    "Google Cloud Associate Engineer"
+  ],
+  "achievements": [
+    "Contributed to mutliple open-source projects",
+    "Mentored junior developers in best practices and code reviews",
+    "Lead technical discussions and architecture decision-making sessions"
+  ],
+  "skills": [
+    "Java",
+    "Python",
+    "Dart",
+    "Spring Boot",
+    "Spring Security",
+    "REST APIs",
+    "Microservices",
+    "React.js",
+    "Flutter",
+    "MongoDB",
+    "Docker",
+    "GCP",
+    "Git",
+    "CI/CD"
+  ],
+  "experience": [
+    {
+      "company": "Accenture India",
+      "role": "Advanced Application Engineering Senior Analyst",
+      "start": "Aug 2025",
+      "end": "Present",
+      "projects": [
+        { "title": "Food Supply Chain Platform" }
+      ]
+    },
+    {
+      "company": "Accenture India",
+      "role": "Advanced Application Engineering Analyst",
+      "start": "Nov 2022",
+      "end": "Aug 2025",
+      "projects": [
+        { "title": "Food Supply Chain Platform" },
+        { "title": "Enterprise Logging & Analytics Pipeline" },
+        { "title": "RISE System Monitoring & Triage Platform" }
+      ]
+    }
+  ]
+}

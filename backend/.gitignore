@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+
+# Virtual environment
+venv/
+.env
+
+# Generated / debug files
+llm_output.txt
+parsed_sections.json
+scraped_jd.txt
+scraped_raw.html
+
+# OS / Editor
+.idea/
+.vscode/
+
+# PDFs / outputs
+*.pdf
