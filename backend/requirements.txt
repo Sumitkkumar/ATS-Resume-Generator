@@ -3,4 +3,6 @@ uvicorn
 fpdf2
 python-dotenv
 requests
+selenium
+beautifulsoup4
 google-generativeai>=0.5.0
