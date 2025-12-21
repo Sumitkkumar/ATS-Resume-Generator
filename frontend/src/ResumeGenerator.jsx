@@ -16,7 +16,8 @@ export default function ResumeGenerator() {
     setError("");
 
     try {
-      const res = await fetch("/api/generate-resume-from-url", {
+      const API_BASE = import.meta.env.VITE_API_BASE_URL;
+      const res = await fetch(`${API_BASE}/generate-resume-from-url`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

@@ -5,8 +5,16 @@ from pydantic import BaseModel
 from agent import JobResumeAgent, JobResumeAgentConfig
 from jd_scraper import scrape_jd
 from fastapi import HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class Req(BaseModel):
     jd_text: str
