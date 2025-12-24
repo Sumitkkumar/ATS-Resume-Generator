@@ -1,11 +1,14 @@
+import os
+import time
+
 import requests
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import time
 
 def is_spa_or_dynamic(html: str) -> bool:
     """Check if page is likely a SPA or uses dynamic content"""
@@ -33,14 +36,28 @@ def scrape_with_requests(url: str) -> str:
 def scrape_with_selenium(url: str) -> str:
     """Use Selenium for dynamic content"""
     chrome_options = Options()
-    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--headless=new")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_argument("--disable-blink-features=AutomationControlled")
     chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
     chrome_options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36")
+
+    # Production: Use environment variables if set
+    # Local development: Let Selenium auto-detect Chrome
+    chrome_binary = os.getenv("CHROME_BIN")
+    driver_path = os.getenv("CHROMEDRIVER_PATH")
     
-    driver = webdriver.Chrome(options=chrome_options)
+    if chrome_binary:
+        chrome_options.binary_location = chrome_binary
+    
+    # Only create Service if driver_path is explicitly set (production)
+    if driver_path:
+        service = Service(driver_path)
+        driver = webdriver.Chrome(service=service, options=chrome_options)
+    else:
+        # Local: Selenium will auto-detect Chrome and ChromeDriver
+        driver = webdriver.Chrome(options=chrome_options)
     
     try:
         driver.get(url)
