@@ -50,14 +50,69 @@ def scrape_with_selenium(url: str) -> str:
     
     if chrome_binary:
         chrome_options.binary_location = chrome_binary
+        print(f"Using Chrome binary: {chrome_binary}")
     
-    # Only create Service if driver_path is explicitly set (production)
+    driver = None
+    error_messages = []
+    
+    # Try multiple methods to initialize Chrome driver
+    # Method 1: Use explicit driver path if provided
     if driver_path:
-        service = Service(driver_path)
-        driver = webdriver.Chrome(service=service, options=chrome_options)
-    else:
-        # Local: Selenium will auto-detect Chrome and ChromeDriver
-        driver = webdriver.Chrome(options=chrome_options)
+        try:
+            print(f"Attempting to use ChromeDriver at: {driver_path}")
+            if os.path.exists(driver_path):
+                service = Service(driver_path)
+                driver = webdriver.Chrome(service=service, options=chrome_options)
+                print("✓ ChromeDriver initialized successfully with explicit path")
+            else:
+                error_messages.append(f"ChromeDriver not found at: {driver_path}")
+        except Exception as e:
+            error_messages.append(f"Failed with explicit path: {str(e)}")
+    
+    # Method 2: Try common ChromeDriver locations
+    if driver is None:
+        common_paths = [
+            "/usr/bin/chromedriver",
+            "/usr/lib/chromium/chromedriver",
+            "/usr/lib/chromium-browser/chromedriver",
+        ]
+        for path in common_paths:
+            try:
+                if os.path.exists(path):
+                    print(f"Trying ChromeDriver at: {path}")
+                    service = Service(path)
+                    driver = webdriver.Chrome(service=service, options=chrome_options)
+                    print(f"✓ ChromeDriver initialized successfully at: {path}")
+                    break
+            except Exception as e:
+                error_messages.append(f"Failed at {path}: {str(e)}")
+                continue
+    
+    # Method 3: Use webdriver-manager as fallback
+    if driver is None:
+        try:
+            print("Attempting to use webdriver-manager...")
+            from webdriver_manager.chrome import ChromeDriverManager
+            service = Service(ChromeDriverManager().install())
+            driver = webdriver.Chrome(service=service, options=chrome_options)
+            print("✓ ChromeDriver initialized successfully with webdriver-manager")
+        except Exception as e:
+            error_messages.append(f"Failed with webdriver-manager: {str(e)}")
+    
+    # Method 4: Let Selenium auto-detect (local development)
+    if driver is None:
+        try:
+            print("Attempting auto-detection...")
+            driver = webdriver.Chrome(options=chrome_options)
+            print("✓ ChromeDriver initialized successfully with auto-detection")
+        except Exception as e:
+            error_messages.append(f"Failed with auto-detection: {str(e)}")
+    
+    # If all methods failed, raise an error with all error messages
+    if driver is None:
+        error_msg = "Unable to initialize ChromeDriver. Tried multiple methods:\n" + "\n".join(error_messages)
+        print(f"❌ {error_msg}")
+        raise RuntimeError(error_msg)
     
     try:
         driver.get(url)

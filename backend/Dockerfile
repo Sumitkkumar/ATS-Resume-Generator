@@ -1,6 +1,5 @@
 FROM python:3.10-slim
 
-# System deps for PDF + fonts
 RUN apt-get update && apt-get install -y \
     build-essential \
     libglib2.0-0 \
@@ -12,7 +11,15 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 ENV CHROME_BIN=/usr/bin/chromium
-ENV CHROMEDRIVER_PATH=/usr/lib/chromium/chromedriver
+ENV CHROMEDRIVER_PATH=/usr/bin/chromedriver
+
+RUN if [ -f /usr/lib/chromium/chromedriver ] && [ ! -f /usr/bin/chromedriver ]; then \
+    ln -s /usr/lib/chromium/chromedriver /usr/bin/chromedriver; \
+fi
+
+RUN chmod +x /usr/bin/chromedriver 2>/dev/null || \
+    chmod +x /usr/lib/chromium/chromedriver 2>/dev/null || \
+    echo "ChromeDriver will be handled by webdriver-manager if needed"
 
 WORKDIR /app
 
